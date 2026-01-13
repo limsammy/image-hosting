@@ -118,6 +118,13 @@ image_hosting/
 │   └── Dockerfile
 │
 ├── docker-compose.yml           # Backend + Frontend + PostgreSQL
+├── docs/
+│   └── mockups/                 # UI/UX wireframes and user flows
+│       ├── 01-login-page.md
+│       ├── 02-register-page.md
+│       ├── 03-home-gallery.md
+│       ├── 04-image-card.md
+│       └── 05-user-flows.md
 ├── .gitignore
 └── README.md
 ```
@@ -286,49 +293,61 @@ dev = [
 4. Create Docker Compose configuration (backend, frontend, postgres)
 5. Create `.env.example` files and `.gitignore`
 
-### Phase 2: Database & Models (Steps 6-9)
-6. Configure SQLAlchemy with async PostgreSQL (`database.py`)
-7. Define SQLAlchemy ORM models (`models/user.py`, `models/image.py`)
-8. Define Pydantic schemas (`schemas/`)
-9. Set up Alembic for database migrations
+### Phase 2: UI/UX Design (Steps 6-8)
+6. Create wireframe mockups for all pages (ASCII/text-based in `docs/mockups/`)
+7. Define user flows: registration, login, upload, gallery browse, copy URL, delete
+8. Document component hierarchy and state management approach
 
-### Phase 3: Backend - Auth (Steps 10-13)
-10. Implement `config.py` with pydantic-settings
-11. Configure Loguru logging (`logging.py`) with LOG_LEVEL env var
-12. Implement auth service (password hashing, JWT)
-13. Create auth router (register, login, /me)
+**Mockups to create:**
+- `docs/mockups/01-login-page.md` - Login form layout
+- `docs/mockups/02-register-page.md` - Registration form layout
+- `docs/mockups/03-home-gallery.md` - Main gallery with upload dropzone
+- `docs/mockups/04-image-card.md` - Individual image card with actions
+- `docs/mockups/05-user-flows.md` - User journey diagrams
 
-### Phase 4: Backend - Storage (Steps 14-16)
-14. Implement R2 storage service with presigned URLs
-15. Create images router (upload-url, confirm, list, delete)
-16. Wire up routers in `main.py` with CORS and logging middleware
+### Phase 3: Database & Models (Steps 9-12)
+9. Configure SQLAlchemy with async PostgreSQL (`database.py`)
+10. Define SQLAlchemy ORM models (`models/user.py`, `models/image.py`)
+11. Define Pydantic schemas (`schemas/`)
+12. Set up Alembic for database migrations
 
-### Phase 5: Backend - Testing (Steps 17-19)
-17. Set up pytest with fixtures and test database
-18. Write unit tests for auth and storage services
-19. Write integration tests for API endpoints (with VCR for R2)
+### Phase 4: Backend - Auth (Steps 13-16)
+13. Implement `config.py` with pydantic-settings
+14. Configure Loguru logging (`logging.py`) with LOG_LEVEL env var
+15. Implement auth service (password hashing, JWT)
+16. Create auth router (register, login, /me)
 
-### Phase 6: Frontend - Core (Steps 20-23)
-20. Create `api/client.ts` with axios + auth interceptor
-21. Implement `AuthContext.tsx` for auth state
-22. Set up React Router in `App.tsx`
-23. Create ErrorBoundary component
+### Phase 5: Backend - Storage (Steps 17-19)
+17. Implement R2 storage service with presigned URLs
+18. Create images router (upload-url, confirm, list, delete)
+19. Wire up routers in `main.py` with CORS and logging middleware
 
-### Phase 7: Frontend - Features (Steps 24-28)
-24. Build LoginForm and RegisterForm components
-25. Build `DropZone.tsx` with react-dropzone
-26. Create `ImageGallery.tsx` and `ImageCard.tsx`
-27. Implement `CopyButton.tsx`
-28. Style with Tailwind (responsive grid, forms, buttons)
+### Phase 6: Backend - Testing (Steps 20-22)
+20. Set up pytest with fixtures and test database
+21. Write unit tests for auth and storage services
+22. Write integration tests for API endpoints (with VCR for R2)
 
-### Phase 8: Frontend - Testing (Steps 29-30)
-29. Configure Vitest with React Testing Library
-30. Write component tests (DropZone, ImageCard, forms)
+### Phase 7: Frontend - Core (Steps 23-26)
+23. Create `api/client.ts` with axios + auth interceptor
+24. Implement `AuthContext.tsx` for auth state
+25. Set up React Router in `App.tsx`
+26. Create ErrorBoundary component
 
-### Phase 9: Integration & Polish (Steps 31-33)
-31. Test Docker Compose full stack locally
-32. Create Cloudflare R2 bucket + API credentials
-33. End-to-end test: register → login → upload → view → copy → delete
+### Phase 8: Frontend - Features (Steps 27-31)
+27. Build LoginForm and RegisterForm components
+28. Build `DropZone.tsx` with react-dropzone
+29. Create `ImageGallery.tsx` and `ImageCard.tsx`
+30. Implement `CopyButton.tsx`
+31. Style with Tailwind (responsive grid, forms, buttons)
+
+### Phase 9: Frontend - Testing (Steps 32-33)
+32. Configure Vitest with React Testing Library
+33. Write component tests (DropZone, ImageCard, forms)
+
+### Phase 10: Integration & Polish (Steps 34-36)
+34. Test Docker Compose full stack locally
+35. Create Cloudflare R2 bucket + API credentials
+36. End-to-end test: register → login → upload → view → copy → delete
 
 ---
 
