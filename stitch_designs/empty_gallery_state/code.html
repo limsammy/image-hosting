@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Empty Gallery State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-white/10 bg-white dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">photo_library</span>
+</div>
+<h2 class="text-[#0d121b] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em] font-display">Gallery</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#e7ebf3] dark:bg-white/10 text-[#0d121b] dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#e7ebf3] dark:bg-white/10 text-[#0d121b] dark:text-white">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-[#e7ebf3] dark:border-white/10" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBDPgCWsclcDVckSjp2s5JYyOI6vPAolJ4WZGqvHdOQAEb-iLjmWaDuuCgbRJY13CwGzapCuk8DacbXFKgwdL8oB9Sm8LXCW3kYw5mT4DMa-mmz76w0yW0xNoh3EfVtoNAj6kdgbgBghKrszQaiKH8qH2rh1rXTLFAAwfPgyN7OeZR5bvg_O-Dco1GAaeed-_-EZwhMKKdtG75LZJr_gP7oTMz5XeS4BghdD_-Ht1uMy-jz4UJ8tyAoO4myPbkBg_JQt6d6x18amg8W");'>
+</div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8 px-4 sm:px-10">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1 gap-8">
+<!-- Upload Dropzone -->
+<div class="flex flex-col">
+<div class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-[#cfd7e7] dark:border-white/20 bg-white dark:bg-white/5 px-6 py-12 transition-colors hover:border-primary/50">
+<div class="flex max-w-[480px] flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-primary/60">cloud_upload</span>
+<p class="text-[#0d121b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] text-center">Upload or Drag &amp; Drop</p>
+<p class="text-[#4c669a] dark:text-white/60 text-sm font-normal leading-normal text-center">Drag and drop images here, or click to browse files from your computer</p>
+</div>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] transition-opacity hover:opacity-90">
+<span class="truncate">Select Files</span>
+</button>
+</div>
+</div>
+<!-- Main Empty State Content -->
+<div class="flex flex-col items-center justify-center py-16 gap-8">
+<div class="relative w-full max-w-[400px] flex justify-center">
+<!-- Friendly Folder Illustration -->
+<div class="bg-primary/5 dark:bg-primary/10 rounded-full p-10 flex items-center justify-center border border-primary/10">
+<span class="material-symbols-outlined text-8xl text-primary/40 select-none">folder_off</span>
+</div>
+<!-- Subtle small icon accents -->
+<span class="material-symbols-outlined absolute top-4 right-10 text-2xl text-primary/20 rotate-12">image</span>
+<span class="material-symbols-outlined absolute bottom-4 left-10 text-2xl text-primary/20 -rotate-12">add_circle</span>
+</div>
+<div class="flex max-w-[480px] flex-col items-center gap-3">
+<h3 class="text-[#0d121b] dark:text-white text-2xl font-bold leading-tight tracking-[-0.015em] text-center">No images yet</h3>
+<p class="text-[#4c669a] dark:text-white/60 text-base font-normal leading-relaxed text-center">
+                                Your gallery is feeling a bit empty. Upload your first image using the dropzone above to get started with your collection.
+                            </p>
+</div>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7ebf3] dark:bg-white/10 text-[#0d121b] dark:text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Learn about hosting</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex flex-col gap-6 px-10 py-10 text-center border-t border-[#e7ebf3] dark:border-white/10 mt-auto bg-white/50 dark:bg-background-dark/50">
+<div class="flex flex-wrap items-center justify-center gap-10">
+<a class="text-[#4c669a] dark:text-white/40 text-sm font-medium hover:text-primary transition-colors" href="#">Terms</a>
+<a class="text-[#4c669a] dark:text-white/40 text-sm font-medium hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="text-[#4c669a] dark:text-white/40 text-sm font-medium hover:text-primary transition-colors" href="#">API Docs</a>
+<a class="text-[#4c669a] dark:text-white/40 text-sm font-medium hover:text-primary transition-colors" href="#">Help Center</a>
+</div>
+<p class="text-[#4c669a] dark:text-white/30 text-xs font-normal">© 2024 Gallery Hosting Inc. Designed for creators.</p>
+</footer>
+</div>
+</div>
+</body></html>

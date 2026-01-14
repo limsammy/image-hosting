@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Main Gallery Dashboard - Image Host</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#0d121b] dark:text-slate-200">
+<!-- Navigation Bar -->
+<header class="sticky top-0 z-50 w-full bg-white dark:bg-slate-900 border-b border-solid border-[#e7ebf3] dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-[#0d121b] dark:text-white">Image Host</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex flex-col items-end">
+<span class="text-sm font-semibold">johndoe</span>
+<span class="text-xs text-[#4c669a]">Pro Account</span>
+</div>
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-[#e7ebf3] dark:bg-slate-800 text-[#0d121b] dark:text-slate-200 text-sm font-bold transition-colors hover:bg-[#dce1ec]">
+<span class="truncate">Account</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold transition-opacity hover:opacity-90">
+<span class="truncate">Logout</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Upload Section -->
+<section class="mb-12">
+<div class="flex flex-col">
+<div class="group flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-[#cfd7e7] dark:border-slate-700 bg-white dark:bg-slate-900/50 px-6 py-16 transition-colors hover:border-primary/50 hover:bg-primary/5 cursor-pointer">
+<div class="flex flex-col items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<div class="max-w-[480px] text-center">
+<p class="text-[#0d121b] dark:text-white text-xl font-bold leading-tight mb-1">Drag and drop images here</p>
+<p class="text-[#4c669a] dark:text-slate-400 text-base">Support for JPG, PNG, WEBP up to 10MB</p>
+</div>
+</div>
+<button class="flex min-w-[140px] items-center justify-center rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold shadow-sm transition-transform active:scale-95">
+<span class="truncate">Choose Files</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Gallery Header -->
+<div class="flex items-center justify-between mb-6 px-2">
+<h2 class="text-2xl font-bold tracking-tight">Your Gallery</h2>
+<div class="flex items-center gap-2 text-sm text-[#4c669a]">
+<span>Showing 12 of 156 images</span>
+</div>
+</div>
+<!-- Image Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+<!-- Gallery Item 1 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-300 group-hover:scale-105" data-alt="Wide scenic mountain landscape with a lake" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCw3AB7WOx4N3OWAywZbNy7156k2aAnLyPtcViOwlC4XovhKdd9eUki7zPRJnESBHMYOXXsoGA2eeYVay2KWzGfhWl2KL7jBPOzzoqgyiky0ZcYO0N78BpwVyGlUt-UJU4ici91-6W5ppkRXa62NSxEXBqyTEMKk0ArFcWNB6MvnXrdvMGl1CUZbH9gIAWNm9JJD41nno2A1giZWhzlRoeWVOthzcqQoGLQrWHACQbv7AyJGsMfpFWUXWiU71vUaE_mTSFPPjxTlD59");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">mountain_view_01.jpg</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 2 mins ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-300 group-hover:scale-105" data-alt="Peaceful lakeside cottage at sunset" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApOB862rFn7BViGwZcGCXJqvi1Ii_gi3xOHACOcw1L3sxrTZ0s5icNZ02ZNnMK5hykKmkmE7f09Ok1GWBPIYrK-kUG0f3naJ2n9LIh5qYPZ2veMnaAlqPmCU2h_LhWzHoGIVq7mBTz8gdeWi4dYfoQ8bCXJOYx5PiWmzhi-Lvn_A9KFGOPutQDPmK3t4F_ANslRvaU5A8qLaCxoCoIMvePOW7M5PSCTTO7gwYp0nvS0XpkCzkpALmKJ2AYUrlFyFNUja9HV3-DkqGU");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">lake_retreat.png</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 45 mins ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-300 group-hover:scale-105" data-alt="Sunlight filtering through tall forest trees" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBqh0nRBTetqkoei0f3dW2-4by2n52ijBJ6FOKUs1K8vBaoxAUmno1-ZxR-WhBbl4ICXnEwO8Lgq3yl3cVnitxzEB8dzv4wb2aPJ3yv8mnP0rD3OIcA5QrsLvf_Mj9kFRVg3lvnaCt8AVN60-F_kMP-_Aw-qgqmAH4DNxVwD-biN5FVh5z3WdPE7KpwEo-R52OhfuJYiZWgiby9-YipNdRPZ0Im9B70jGg44o3dxR5HmMiHdTLyHoB7TJEfFqTb-Lz7AA1eh8Z578Ot");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">forest_hike_2024.webp</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 3 hours ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Gallery Item 4 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-300 group-hover:scale-105" data-alt="Aerial view of turquoise ocean waves" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmNLD2oe8tJ7xSIHuo6KgUz2oEJs_fY4ZVx6E605mdX_ksp0Mm--Lt9ouX7qkMoV9c6xnNxOZKKGRCscjMD9xgezZHNosKcuGbY4o-LGMk4z-YB_vN5dvRQqJJHf6BciCP3HY0T5wL5Im4Rt7V4PUzqLiAIpYGWx0k3LLFO0eqBF0I8nTGayQAOyC9b782AMcKWdQ1dun3fDUr1VThHT5hJGwI1XZ2mCj8CCxaP-GLzt5rUA_0mPES36Wfp3xgYGwMBbVGM4XqWer1");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">ocean_aerial.jpg</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 1 day ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Gallery Item 5 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-300 group-hover:scale-105" data-alt="Portrait of a snow-capped mountain peak" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDxq0tupp4h67caWnGLRW9swsQykrx4k5JhWDEicYOQwdgvBNdPiV4Z6WzczP8GIyPZxIPn8h5hkq9JKE1NmRq2Ll1S1T7gPrgUn4bU6InmHuKci1nTsoLsY1FC4k0H0LzdhVbbgINshmLtzEWDJ6L3qwxHgM795EESXC8MJmj5h7wNeKFiVjUAyIPAu5InHxnnPKQmxWRlnjnY2Ush-TBGZ-iu4jdP3ojXyqA2fFwp3lClh9QJt97AtgmYD14x-IvteIRSywMRjWGU");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">everest_peak.jpeg</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 2 days ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Additional filler cards for grid visualization -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm opacity-60">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Golden Gate Bridge in morning fog" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYcnPG18daxSx6kslPYcPB0nigP__4bkv8KurfL9Jz5yRXRhCahdi1pBStB2K29kqRpmz3tqsk-jG7YCHQE7W_W1f6tyDU7MzrxCo_V2hD4feVJ_PashT_1IgmtnZGuCpvRcYhc5YlOPHNVywR9gCGfSONq3UazzJb-IGXVXOP9IMkAnsE5O0C2z-CC_3IrWRxA4VF2o5kFpqae1tk8Fn2dNex7hJ_TvTf5Cso4ytkrfCWhvA_UHt3mXS8OhA4tUdygiYl2mONXF5Z");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">san_fran_bridge.jpg</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 3 days ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-[#e7ebf3] dark:border-slate-800 shadow-sm opacity-60">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Canyon landscape with red rock formations" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTjH2myh3bRCLYI-X7ODTeXXhgdqnlfSszTkVAMjR_L_xZEiw4FRFVKqYUV_4_Y3pU8n9DJSMHjnsaUWUf14Ap9Zr6AjY-HpbM5eYsi4JoY4Yfbg3WEKH31wT1bGTFFrcOQkpuaZfC9BWQPcl3DsBn0qks86mzv00FKnG0INHu0I77HFHyxnAA0LdLMZtBSbkKfrSh7woVU6IQn9bOgGoK5Ge25ivceB09Jm4haKuyBMYNmfC9LT4f5yf5mGHK1OgD5g8AofdSvuWU");'>
+</div>
+</div>
+<div class="p-4">
+<p class="text-[#0d121b] dark:text-white text-sm font-semibold truncate mb-1">grand_canyon.png</p>
+<p class="text-[#4c669a] text-xs mb-4">Added 4 days ago</p>
+<div class="flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 rounded-lg h-9 px-3 bg-primary/10 text-primary text-xs font-bold">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+<span>URL</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-red-50 text-red-600">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More Section -->
+<div class="flex justify-center mt-12 mb-8">
+<button class="flex items-center justify-center rounded-lg h-12 px-8 bg-white dark:bg-slate-900 border border-[#e7ebf3] dark:border-slate-800 text-[#0d121b] dark:text-slate-200 text-sm font-bold shadow-sm hover:bg-[#f8f9fc] dark:hover:bg-slate-800 transition-colors">
+                Load More Images
+            </button>
+</div>
+</main>
+<!-- Footer Information -->
+<footer class="mt-auto border-t border-[#e7ebf3] dark:border-slate-800 py-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<span class="text-sm font-semibold opacity-60">© 2024 Image Host Inc.</span>
+</div>
+<div class="flex gap-8 text-sm font-medium opacity-60">
+<a class="hover:text-primary transition-colors" href="#">API Documentation</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Help Center</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Simple Toast Notification (Hidden by default) -->
+<div class="fixed bottom-6 right-6 flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-lg shadow-xl translate-y-24 transition-transform duration-300 pointer-events-none">
+<span class="material-symbols-outlined text-green-400" data-icon="check_circle">check_circle</span>
+<span class="text-sm font-medium">Link copied to clipboard</span>
+</div>
+</body></html>
