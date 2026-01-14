@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import DesignSystem from './pages/DesignSystem';
+import Login from './pages/Login';
+import Gallery from './pages/Gallery';
 
 function App() {
   return (
@@ -8,10 +10,12 @@ function App() {
         {/* Design System Route */}
         <Route path="/design-system" element={<DesignSystem />} />
 
-        {/* Placeholder routes for future pages */}
-        <Route path="/login" element={<ComingSoon page="Login" />} />
+        {/* Auth Pages */}
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<ComingSoon page="Register" />} />
-        <Route path="/gallery" element={<ComingSoon page="Gallery" />} />
+
+        {/* Main App Pages */}
+        <Route path="/gallery" element={<Gallery />} />
 
         {/* Redirect root to design system for now */}
         <Route path="/" element={<Navigate to="/design-system" replace />} />
