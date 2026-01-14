@@ -1,0 +1,480 @@
+/**
+ * Component Styles
+ *
+ * Reusable component classes built on design tokens.
+ * Uses @apply for Tailwind integration and @layer for proper cascade.
+ */
+
+@layer components {
+  /* ========================================
+     TYPOGRAPHY COMPONENTS
+     Emphasizing thin, elegant font weights
+     ======================================== */
+
+  /* Headings - Large with thin weights */
+  .heading-display {
+    @apply text-6xl font-thin tracking-tight leading-none text-text-primary;
+  }
+
+  .heading-1 {
+    @apply text-5xl font-extralight tracking-tight leading-tight text-text-primary;
+  }
+
+  .heading-2 {
+    @apply text-4xl font-light tracking-tight leading-tight text-text-primary;
+  }
+
+  .heading-3 {
+    @apply text-3xl font-light leading-snug text-text-primary;
+  }
+
+  .heading-4 {
+    @apply text-2xl font-normal leading-snug text-text-primary;
+  }
+
+  .heading-5 {
+    @apply text-xl font-normal leading-normal text-text-primary;
+  }
+
+  .heading-6 {
+    @apply text-lg font-medium leading-normal text-text-primary;
+  }
+
+  /* Body text variants */
+  .body-lg {
+    @apply text-lg font-light leading-relaxed text-text-secondary;
+  }
+
+  .body-base {
+    @apply text-base font-normal leading-relaxed text-text-secondary;
+  }
+
+  .body-sm {
+    @apply text-sm font-normal leading-relaxed text-text-secondary;
+  }
+
+  .body-xs {
+    @apply text-xs font-normal leading-relaxed text-text-tertiary;
+  }
+
+  /* Label text - for forms */
+  .label {
+    @apply text-sm font-medium leading-normal text-text-primary;
+  }
+
+  .label-sm {
+    @apply text-xs font-medium leading-normal text-text-secondary;
+  }
+
+  /* Caption/helper text */
+  .caption {
+    @apply text-xs font-normal leading-normal text-text-tertiary;
+  }
+
+  /* Link styles */
+  .link {
+    @apply text-text-link hover:text-text-link-hover underline-offset-2 hover:underline transition-colors duration-fast;
+  }
+
+  .link-subtle {
+    @apply text-text-secondary hover:text-text-primary transition-colors duration-fast;
+  }
+
+  /* ========================================
+     BUTTON COMPONENTS
+     ======================================== */
+
+  /* Base button */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           font-medium text-sm leading-normal
+           px-4 py-2 rounded-lg
+           transition-all duration-normal
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Button sizes */
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-md;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base rounded-xl;
+  }
+
+  .btn-xl {
+    @apply px-8 py-4 text-lg rounded-xl;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply btn bg-primary text-white
+           hover:bg-primary-700 active:bg-primary-800
+           shadow-sm hover:shadow-md;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply btn bg-secondary-100 text-secondary-700
+           hover:bg-secondary-200 active:bg-secondary-300;
+    --tw-ring-color: var(--color-secondary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Outline button */
+  .btn-outline {
+    @apply btn bg-transparent border border-border-primary text-text-primary
+           hover:bg-bg-secondary active:bg-bg-tertiary;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply btn bg-transparent text-text-secondary
+           hover:bg-bg-secondary hover:text-text-primary
+           active:bg-bg-tertiary;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply btn bg-error text-white
+           hover:bg-error-700 active:bg-error-700;
+    --tw-ring-color: var(--color-error-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Icon-only button */
+  .btn-icon {
+    @apply btn p-2 aspect-square;
+  }
+
+  .btn-icon-sm {
+    @apply btn-icon p-1.5;
+  }
+
+  .btn-icon-lg {
+    @apply btn-icon p-3;
+  }
+
+  /* ========================================
+     INPUT COMPONENTS
+     ======================================== */
+
+  /* Base input */
+  .input {
+    @apply w-full px-4 py-2.5
+           bg-surface-primary text-text-primary
+           border border-border-primary rounded-lg
+           font-normal text-base leading-normal
+           placeholder:text-text-tertiary
+           transition-all duration-fast
+           focus:outline-none focus:ring-2 focus:border-primary-500
+           disabled:bg-bg-secondary disabled:cursor-not-allowed;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.2;
+  }
+
+  .input-sm {
+    @apply px-3 py-2 text-sm rounded-md;
+  }
+
+  .input-lg {
+    @apply px-5 py-3 text-lg rounded-xl;
+  }
+
+  .input-error {
+    @apply border-error-500;
+    --tw-ring-color: var(--color-error-500);
+    --tw-ring-opacity: 0.2;
+  }
+
+  /* Textarea */
+  .textarea {
+    @apply input min-h-[120px] resize-y;
+  }
+
+  /* Select */
+  .select {
+    @apply input appearance-none cursor-pointer
+           bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')]
+           bg-[length:1.5em_1.5em] bg-[right_0.5rem_center] bg-no-repeat pr-10;
+  }
+
+  /* Checkbox & Radio base */
+  .checkbox,
+  .radio {
+    @apply w-4 h-4
+           bg-surface-primary border border-border-primary
+           text-primary-600
+           transition-all duration-fast
+           focus:ring-2 focus:ring-offset-0
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.2;
+  }
+
+  .checkbox {
+    @apply rounded;
+  }
+
+  .radio {
+    @apply rounded-full;
+  }
+
+  /* ========================================
+     CARD COMPONENTS
+     ======================================== */
+
+  .card {
+    @apply bg-surface-primary rounded-xl border border-border-primary;
+  }
+
+  .card-elevated {
+    @apply bg-surface-elevated rounded-xl shadow-md;
+  }
+
+  .card-interactive {
+    @apply card transition-all duration-normal
+           hover:shadow-md hover:border-border-secondary
+           cursor-pointer;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-border-primary;
+  }
+
+  .card-body {
+    @apply px-6 py-4;
+  }
+
+  .card-footer {
+    @apply px-6 py-4 border-t border-border-primary bg-bg-secondary rounded-b-xl;
+  }
+
+  /* ========================================
+     BADGE COMPONENTS
+     ======================================== */
+
+  .badge {
+    @apply inline-flex items-center gap-1
+           px-2 py-0.5 rounded-full
+           text-xs font-medium leading-normal;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-700;
+  }
+
+  .badge-secondary {
+    @apply badge bg-secondary-100 text-secondary-700;
+  }
+
+  .badge-success {
+    @apply badge bg-success-50 text-success-700;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning-50 text-warning-700;
+  }
+
+  .badge-error {
+    @apply badge bg-error-50 text-error-700;
+  }
+
+  .badge-outline {
+    @apply badge bg-transparent border border-border-primary text-text-secondary;
+  }
+
+  /* ========================================
+     DIVIDER COMPONENTS
+     ======================================== */
+
+  .divider {
+    @apply border-t border-border-primary;
+  }
+
+  .divider-vertical {
+    @apply border-l border-border-primary h-full;
+  }
+
+  /* ========================================
+     OVERLAY & BACKDROP
+     ======================================== */
+
+  .backdrop {
+    @apply fixed inset-0 z-modal-backdrop;
+    background-color: rgb(15 23 42 / 0.5);
+  }
+
+  .modal {
+    @apply fixed z-modal
+           bg-surface-elevated rounded-2xl shadow-2xl
+           max-w-lg w-full mx-4
+           top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+
+  /* ========================================
+     AVATAR COMPONENTS
+     ======================================== */
+
+  .avatar {
+    @apply inline-flex items-center justify-center
+           bg-primary-100 text-primary-700
+           rounded-full overflow-hidden
+           font-medium;
+  }
+
+  .avatar-xs {
+    @apply w-6 h-6 text-xs;
+  }
+
+  .avatar-sm {
+    @apply w-8 h-8 text-sm;
+  }
+
+  .avatar-md {
+    @apply w-10 h-10 text-base;
+  }
+
+  .avatar-lg {
+    @apply w-12 h-12 text-lg;
+  }
+
+  .avatar-xl {
+    @apply w-16 h-16 text-xl;
+  }
+
+  /* ========================================
+     SKELETON LOADING
+     ======================================== */
+
+  .skeleton {
+    @apply bg-secondary-200 rounded animate-pulse;
+  }
+
+  .skeleton-text {
+    @apply skeleton h-4 w-full;
+  }
+
+  .skeleton-avatar {
+    @apply skeleton rounded-full w-10 h-10;
+  }
+
+  .skeleton-button {
+    @apply skeleton h-10 w-24 rounded-lg;
+  }
+
+  /* ========================================
+     UPLOAD ZONE
+     ======================================== */
+
+  .dropzone {
+    @apply flex flex-col items-center justify-center gap-4
+           p-8 rounded-xl
+           border-2 border-dashed border-border-primary
+           bg-bg-secondary
+           transition-all duration-normal
+           cursor-pointer;
+  }
+
+  .dropzone-active {
+    @apply border-primary-500 bg-primary-50;
+  }
+
+  .dropzone:hover {
+    @apply border-border-secondary bg-bg-tertiary;
+  }
+
+  /* ========================================
+     IMAGE GALLERY GRID
+     ======================================== */
+
+  .gallery-grid {
+    @apply grid gap-4
+           grid-cols-2
+           md:grid-cols-3
+           lg:grid-cols-4;
+  }
+
+  .gallery-item {
+    @apply card-interactive overflow-hidden;
+  }
+
+  .gallery-item-image {
+    @apply aspect-square object-cover w-full;
+  }
+
+  .gallery-item-actions {
+    @apply flex items-center justify-between p-3;
+  }
+}
+
+/* ========================================
+   UTILITY EXTENSIONS
+   ======================================== */
+
+@layer utilities {
+  /* Thin text utilities for elegant typography */
+  .text-thin {
+    font-weight: var(--font-weight-thin);
+  }
+
+  .text-extralight {
+    font-weight: var(--font-weight-extralight);
+  }
+
+  .text-elegant {
+    font-weight: var(--font-weight-extralight);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  /* Focus ring utilities */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  .focus-ring-inset {
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-0;
+    --tw-ring-color: var(--color-primary-500);
+    --tw-ring-opacity: 0.5;
+  }
+
+  /* Scrollbar utilities */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary-300) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary-300);
+    border-radius: var(--radius-full);
+  }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}

@@ -1,0 +1,104 @@
+Google Stitch UI Prompts for Image Hosting App
+===============================================
+
+LOGIN PAGE
+----------
+A clean, minimal login page for an image hosting app.
+
+Centered card on a light gray background.
+Card contains:
+- "Image Host" logo/title at top
+- "Sign in to your account" subtitle
+- Username input field with label
+- Password input field with label
+- Blue "Sign In" button, full width
+- "Don't have an account? Register" link below button
+
+Modern, clean aesthetic with rounded corners and subtle shadows.
+
+
+REGISTER PAGE
+-------------
+A clean registration page for an image hosting app.
+
+Centered card on a light gray background.
+Card contains:
+- "Image Host" logo/title at top
+- "Create your account" subtitle
+- Username input field with label
+- Email input field with label
+- Password input field with label
+- Confirm password input field with label
+- Blue "Create Account" button, full width
+- "Already have an account? Sign in" link below button
+
+Same style as login page, modern and minimal.
+
+
+HOME/GALLERY PAGE
+-----------------
+Main dashboard for an image hosting app after login.
+
+Header bar at top:
+- "Image Host" logo on left
+- Username and logout button on right
+
+Below header, a large drag-and-drop upload zone:
+- Dashed border rectangle
+- Cloud upload icon in center
+- "Drag and drop images here" text
+- "or click to browse" smaller text below
+- Light blue/gray background
+
+Below upload zone, a responsive image gallery grid:
+- 4 columns on desktop, 2 on mobile
+- Each image card shows:
+  - Square thumbnail image
+  - Filename below image
+  - Two icon buttons: copy URL and delete (trash icon)
+- Cards have white background, subtle shadow, rounded corners
+
+Clean, minimal design with plenty of whitespace.
+
+
+IMAGE CARD COMPONENT
+--------------------
+A single image card component for a gallery.
+
+Square aspect ratio container.
+Image thumbnail fills the top portion.
+Below the image:
+- Filename text (truncated if long)
+- Row of two small icon buttons:
+  - Copy link icon (clipboard)
+  - Delete icon (trash can)
+
+White background, rounded corners, subtle drop shadow.
+Hover state shows slight elevation change.
+
+
+EMPTY STATE
+-----------
+Empty state for when user has no uploaded images.
+
+Centered in the main content area.
+Contains:
+- Large illustration or icon of an empty folder/images
+- "No images yet" heading
+- "Upload your first image using the dropzone above" subtext
+- Optional: "Upload" button
+
+Soft gray colors, friendly and inviting.
+
+
+HEADER/NAVBAR COMPONENT
+-----------------------
+Simple header navigation bar for image hosting app.
+
+Full width, white background with subtle bottom border.
+Left side: "Image Host" logo/text in bold
+Right side:
+- User's username displayed
+- "Logout" text button or icon
+
+Fixed to top of page, clean and minimal.

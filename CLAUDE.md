@@ -4,55 +4,83 @@ A minimalist image hosting service with drag-and-drop uploads, user authenticati
 
 ## Tech Stack
 
-- **Backend**: FastAPI, SQLAlchemy, PostgreSQL, Pydantic
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
-- **Storage**: Cloudflare R2 (S3-compatible)
-- **Auth**: JWT tokens with bcrypt password hashing
+| Layer | Technology |
+|-------|------------|
+| **Backend** | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |
+| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS |
+| **Storage** | Cloudflare R2 (S3-compatible) |
+| **Auth** | JWT tokens with bcrypt password hashing |
 
-## MCP Tools Workflow
+## Project Structure
 
-### 1. Serena (Semantic Code Navigation)
+```
+image_hosting/
+├── backend/           # FastAPI Python backend
+│   ├── app/
+│   │   ├── models/    # SQLAlchemy ORM models
+│   │   ├── schemas/   # Pydantic request/response schemas
+│   │   ├── routers/   # API route handlers
+│   │   └── services/  # Business logic (auth, storage)
+│   └── tests/
+├── frontend/          # React TypeScript frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── styles/    # Design system (tokens.css, components.css)
+│   │   └── hooks/
+│   └── tests/
+└── docs/
+```
 
-Activate at the start of each session:
+## Quick Commands
+
+```bash
+# Start frontend dev server
+cd frontend && npm run dev
+
+# Build frontend
+cd frontend && npm run build
+
+# Backend (when implemented)
+cd backend && uv run uvicorn app.main:app --reload
+```
+
+## MCP Tools - Use Selectively
+
+**Default: Use built-in Claude Code tools** (Read, Edit, Write, Grep, Glob, Bash). These are fast, have no overhead, and handle 90% of tasks.
+
+### When to Use MCP Tools
+
+| Tool | Use When | Don't Use When |
+|------|----------|----------------|
+| **Serena** | Complex refactoring across many files, need to find all references to a symbol, exploring unfamiliar large codebase | Simple file edits, reading 1-3 files, small projects |
+| **Context7** | Need current API docs for a library (FastAPI, React, etc.), unsure about library patterns | You already know the API, making simple changes |
+| **Sequential Thinking** | Genuinely complex multi-step problem, debugging tricky issues, architectural decisions with many trade-offs | Routine coding tasks, simple bug fixes, straightforward implementations |
+
+### Serena Activation (Only When Needed)
+
 ```
 mcp__serena__activate_project with path: /Users/sam/projects/image_hosting
 ```
 
-Then read project memories for context:
+Useful Serena commands:
+- `find_symbol` - Find a class/function by name
+- `find_referencing_symbols` - Find all usages of a symbol
+- `get_symbols_overview` - Overview of symbols in a file
+
+### Context7 (Only When Needed)
+
 ```
-mcp__serena__list_memories
-mcp__serena__read_memory
-```
-
-Use Serena for:
-- **Code exploration**: `get_symbols_overview`, `find_symbol`, `find_referencing_symbols`
-- **Code editing**: `replace_symbol_body`, `insert_after_symbol`, `insert_before_symbol`
-- **Search**: `search_for_pattern`, `find_file`, `list_dir`
-
-Prefer Serena's symbolic tools over reading entire files when possible.
-
-### 2. Context7 (Library Documentation)
-
-Use for up-to-date documentation on any library:
-```
-mcp__context7__resolve-library-id  # Find the library ID first
-mcp__context7__query-docs          # Then query for specific help
+mcp__context7__resolve-library-id  # Find library ID
+mcp__context7__query-docs          # Query for specific help
 ```
 
-Useful for: FastAPI, SQLAlchemy, React, Tailwind, boto3, Pydantic, etc.
+## Implementation Status
 
-### 3. Sequential Thinking (Complex Problems)
+See [PLAN.md](./PLAN.md) for full plan.
 
-Use `mcp__sequential-thinking__sequentialthinking` when:
-- Breaking down complex multi-step implementations
-- Debugging tricky issues that need step-by-step analysis
-- Planning architectural decisions with trade-offs
-- Problems where the full scope isn't clear initially
+**Completed:**
+- Phase 1: Project setup (backend, frontend, Docker, docs)
+- Phase 2: UI/UX mockups and design system
 
-## Implementation Plan
-
-See [PLAN.md](./PLAN.md) for the full implementation plan (10 phases, 36 steps).
-
-## Current Status
-
-**Not started** - No code has been implemented yet.
+**Current:** Phase 3 - Database models
