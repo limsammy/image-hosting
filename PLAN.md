@@ -28,6 +28,12 @@ A minimalist image hosting service with:
 
 R2 is **not** a database replacement - it's blob storage for files. PostgreSQL handles everything else.
 
+### Upload Flow
+1. Frontend requests presigned PUT URL from backend
+2. Frontend uploads directly to R2 using presigned URL (PUT request)
+3. Frontend calls confirm endpoint with file metadata
+4. Backend verifies file exists in R2 (HEAD request), then saves metadata to PostgreSQL
+
 ---
 
 ## Project Structure
@@ -164,6 +170,47 @@ class Image(Base):
     user: Mapped["User"] = relationship(back_populates="images")
 ```
 
+### Async Database Setup (backend/app/database.py)
+
+```python
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
+
+engine = create_async_engine(
+    "postgresql+asyncpg://postgres:postgres@db:5432/imagehosting",
+    echo=False,
+)
+
+async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
+async def get_session():
+    async with async_session() as session:
+        yield session
+```
+
+### FastAPI Lifespan (backend/app/main.py)
+
+> **Note**: Use `lifespan` context manager instead of deprecated `@app.on_event("startup")`.
+
+```python
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: create tables, initialize connections
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+    # Shutdown: cleanup
+    await engine.dispose()
+
+app = FastAPI(lifespan=lifespan)
+```
+
 ### Pydantic Schemas (backend/app/schemas/)
 
 ```python
@@ -229,6 +276,74 @@ class ImageListResponse(BaseModel):
 
 ---
 
+## R2 Storage Service Pattern
+
+### Presigned PUT URL (backend/app/services/storage.py)
+
+> **Note**: Use PUT presigned URLs for simpler frontend uploads (no multipart form needed).
+
+```python
+import boto3
+from botocore.config import Config
+
+class R2Storage:
+    def __init__(self, account_id: str, access_key: str, secret_key: str, bucket: str):
+        self.bucket = bucket
+        self.client = boto3.client(
+            "s3",
+            endpoint_url=f"https://{account_id}.r2.cloudflarestorage.com",
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
+            config=Config(signature_version="s3v4"),
+        )
+
+    def generate_upload_url(self, key: str, content_type: str, expires_in: int = 3600) -> str:
+        """Generate presigned PUT URL for direct upload."""
+        return self.client.generate_presigned_url(
+            "put_object",
+            Params={
+                "Bucket": self.bucket,
+                "Key": key,
+                "ContentType": content_type,
+            },
+            ExpiresIn=expires_in,
+        )
+
+    def verify_object_exists(self, key: str) -> dict | None:
+        """Verify upload succeeded before saving metadata. Returns object info or None."""
+        try:
+            response = self.client.head_object(Bucket=self.bucket, Key=key)
+            return {"size": response["ContentLength"], "content_type": response["ContentType"]}
+        except self.client.exceptions.ClientError:
+            return None
+
+    def delete_object(self, key: str) -> bool:
+        """Delete object from R2."""
+        try:
+            self.client.delete_object(Bucket=self.bucket, Key=key)
+            return True
+        except self.client.exceptions.ClientError:
+            return False
+```
+
+### Frontend Upload (simplified PUT)
+
+```typescript
+// Upload directly to R2 with presigned URL
+const uploadToR2 = async (file: File, presignedUrl: string) => {
+  const response = await fetch(presignedUrl, {
+    method: "PUT",
+    body: file,
+    headers: {
+      "Content-Type": file.type,
+    },
+  });
+  return response.ok;
+};
+```
+
+---
+
 ## Key Dependencies
 
 ### Backend (pyproject.toml with uv)
@@ -284,6 +399,38 @@ dev = [
 
 ---
 
+## Validation & Security
+
+### File Upload Validation
+
+**Frontend validation (immediate feedback):**
+- Max file size: 10MB
+- Allowed types: `image/jpeg`, `image/png`, `image/gif`, `image/webp`
+- Validate before requesting presigned URL
+
+**Backend validation:**
+- Verify content-type matches allowed image types
+- Generate unique R2 key with UUID to prevent overwrites
+- Verify file exists in R2 before saving metadata (prevents orphaned DB records)
+
+```python
+# schemas/image.py - with validation
+class ImageUploadRequest(BaseModel):
+    filename: str = Field(min_length=1, max_length=255)
+    content_type: str = Field(pattern=r"^image/(jpeg|png|gif|webp)$")
+    size_bytes: int = Field(gt=0, le=10_485_760)  # Max 10MB
+```
+
+### Security Considerations
+
+- **R2 key generation**: Use `{user_id}/{uuid}.{ext}` pattern to namespace by user
+- **Confirm endpoint**: Always verify file exists in R2 before saving to DB
+- **Delete cascade**: Delete from R2 first, then DB (if R2 fails, don't delete DB record)
+- **JWT validation**: Verify token on every authenticated request
+- **CORS**: Restrict to frontend origin only
+
+---
+
 ## Implementation Steps
 
 ### Phase 1: Project Setup (Steps 1-5)
@@ -306,10 +453,10 @@ dev = [
 - `docs/mockups/05-user-flows.md` - User journey diagrams
 
 ### Phase 3: Database & Models (Steps 9-12)
-9. Configure SQLAlchemy with async PostgreSQL (`database.py`)
-10. Define SQLAlchemy ORM models (`models/user.py`, `models/image.py`)
-11. Define Pydantic schemas (`schemas/`)
-12. Set up Alembic for database migrations
+9. Configure async SQLAlchemy with `create_async_engine` and `async_sessionmaker` (`database.py`)
+10. Define SQLAlchemy ORM models with `Mapped` type hints (`models/user.py`, `models/image.py`)
+11. Define Pydantic schemas with validation constraints (`schemas/`)
+12. Set up Alembic for async database migrations
 
 ### Phase 4: Backend - Auth (Steps 13-16)
 13. Implement `config.py` with pydantic-settings
@@ -318,9 +465,9 @@ dev = [
 16. Create auth router (register, login, /me)
 
 ### Phase 5: Backend - Storage (Steps 17-19)
-17. Implement R2 storage service with presigned URLs
-18. Create images router (upload-url, confirm, list, delete)
-19. Wire up routers in `main.py` with CORS and logging middleware
+17. Implement R2 storage service with presigned PUT URLs and verification
+18. Create images router (upload-url, confirm with R2 verification, list, delete)
+19. Wire up routers in `main.py` with lifespan, CORS, and logging middleware
 
 ### Phase 6: Backend - Testing (Steps 20-22)
 20. Set up pytest with fixtures and test database
@@ -335,9 +482,9 @@ dev = [
 
 ### Phase 8: Frontend - Features (Steps 27-31)
 27. Build LoginForm and RegisterForm components
-28. Build `DropZone.tsx` with react-dropzone
+28. Build `DropZone.tsx` with react-dropzone (include size/type validation)
 29. Create `ImageGallery.tsx` and `ImageCard.tsx`
-30. Implement `CopyButton.tsx`
+30. Implement `CopyButton.tsx` with clipboard API
 31. Style with Tailwind (responsive grid, forms, buttons)
 
 ### Phase 9: Frontend - Testing (Steps 32-33)
