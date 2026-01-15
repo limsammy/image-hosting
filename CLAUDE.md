@@ -82,5 +82,6 @@ See [PLAN.md](./PLAN.md) for full plan.
 **Completed:**
 - Phase 1: Project setup (backend, frontend, Docker, docs)
 - Phase 2: UI/UX mockups and design system
+- Phase 3: Database models (User, Image) with Alembic migrations
 
-**Current:** Phase 3 - Database models
+**Current:** Phase 4 - Auth & Storage services
