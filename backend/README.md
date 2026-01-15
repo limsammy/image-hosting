@@ -89,6 +89,41 @@ backend/
 └── pyproject.toml
 ```
 
+## Testing
+
+Tests use pytest with pytest-asyncio for async support and an in-memory SQLite database.
+
+```bash
+# Install dev dependencies
+uv sync --all-extras
+
+# Run all tests
+uv run pytest
+
+# Run with verbose output
+uv run pytest -v
+
+# Run with coverage
+uv run pytest --cov=app --cov-report=html
+
+# Run only unit tests
+uv run pytest tests/unit/
+
+# Run only integration tests
+uv run pytest tests/integration/
+```
+
+### Test Structure
+
+```
+tests/
+├── conftest.py              # Shared fixtures (async client, test DB)
+├── unit/
+│   └── test_auth_service.py # Unit tests for AuthService
+└── integration/
+    └── test_auth_api.py     # API endpoint integration tests
+```
+
 ## Docker Services
 
 | Service | Description | Port |
