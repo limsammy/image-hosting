@@ -496,6 +496,12 @@ class ImageUploadRequest(BaseModel):
 35. Create Cloudflare R2 bucket + API credentials
 36. End-to-end test: register → login → upload → view → copy → delete
 
+### Phase 11: Documentation & Code Quality (Optional)
+37. Add structured docstrings (Google style) to all Python modules, classes, and functions
+38. Add JSDoc comments to TypeScript functions and components
+39. Generate API documentation (e.g., Sphinx for backend, TypeDoc for frontend)
+40. Review and improve type hint coverage (run mypy/pyright)
+
 ---
 
 ## Environment Variables
