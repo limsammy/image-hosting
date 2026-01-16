@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.config import settings
 from app.logging import setup_logging
-from app.routers import auth_router
+from app.routers import auth_router, images_router
 
 
 @asynccontextmanager
@@ -37,6 +37,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(auth_router)
+app.include_router(images_router)
 
 
 @app.get("/api/health")
