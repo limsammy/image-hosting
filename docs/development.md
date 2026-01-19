@@ -6,8 +6,10 @@ Day-to-day development commands and best practices.
 
 ### Start Development Environment
 
+**Option A: Docker (all services)**
+
 ```bash
-# All services (recommended)
+# All services
 docker-compose up
 
 # Or with rebuild
@@ -17,9 +19,28 @@ docker-compose up --build
 docker-compose up -d
 ```
 
+**Option B: Local Development (recommended for backend work)**
+
+```bash
+# 1. Set up local PostgreSQL (one-time)
+./scripts/setup-local-db.sh
+
+# 2. Update backend/.env with local database settings (see script output)
+
+# 3. Run migrations
+cd backend && uv run alembic upgrade head
+
+# 4. Start backend with hot reload
+uv run uvicorn app.main:app --reload
+
+# 5. In another terminal, start frontend
+cd frontend && npm run dev
+```
+
 ### Stop Services
 
 ```bash
+# Docker
 docker-compose down
 
 # Also remove volumes (clean slate)
@@ -261,11 +282,11 @@ debugger; // Breakpoint
 Connect to PostgreSQL:
 
 ```bash
-# Via Docker
-docker-compose exec db psql -U postgres -d imagehosting
+# Local development (after running setup script)
+psql -U imagehosting_user -d imagehosting_dev -h localhost
 
-# Local
-psql postgresql://postgres:postgres@localhost:5432/imagehosting
+# Via Docker container
+docker-compose exec db psql -U postgres -d imagehosting
 ```
 
 ## API Documentation

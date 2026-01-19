@@ -8,12 +8,18 @@ Complete instructions for setting up the Image Hosting App development environme
 
 | Software | Version | Purpose |
 |----------|---------|---------|
-| Docker | 24+ | Container runtime |
-| Docker Compose | 2.0+ | Multi-container orchestration |
 | Node.js | 20+ | Frontend development |
 | Python | 3.12+ | Backend development |
 | uv | Latest | Python package manager |
 | Git | 2.0+ | Version control |
+| PostgreSQL | 16+ | Database (local development) |
+
+**Or alternatively:**
+
+| Software | Version | Purpose |
+|----------|---------|---------|
+| Docker | 24+ | Container runtime (includes PostgreSQL) |
+| Docker Compose | 2.0+ | Multi-container orchestration |
 
 ### Installing uv (Python Package Manager)
 
@@ -63,22 +69,54 @@ This starts:
 
 #### Option B: Local Development
 
-**Backend:**
+**1. Set up Local PostgreSQL:**
+
+If you have PostgreSQL installed locally, run the setup script:
+
+```bash
+./scripts/setup-local-db.sh
+```
+
+This creates:
+- `imagehosting_user` - dedicated database user
+- `imagehosting_dev` - development database
+- `imagehosting_test` - test database
+
+Or manually create the database:
+
+```bash
+psql -c "CREATE USER imagehosting_user WITH PASSWORD 'imagehosting_dev_password';"
+psql -c "CREATE DATABASE imagehosting_dev OWNER imagehosting_user;"
+```
+
+**2. Configure Environment:**
+
+Update `backend/.env` for local development:
+
+```bash
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=imagehosting_user
+POSTGRES_PASSWORD=imagehosting_dev_password
+POSTGRES_DB=imagehosting_dev
+```
+
+**3. Backend:**
 
 ```bash
 cd backend
 
-# Create virtual environment and install dependencies
-uv sync
-
-# Install dev dependencies too
+# Install dependencies
 uv sync --all-extras
 
-# Run the development server
+# Run migrations
+uv run alembic upgrade head
+
+# Start development server with hot reload
 uv run uvicorn app.main:app --reload
 ```
 
-**Frontend:**
+**4. Frontend:**
 
 ```bash
 cd frontend
@@ -88,15 +126,6 @@ npm install
 
 # Run the development server
 npm run dev
-```
-
-**Database:**
-
-You'll need PostgreSQL running locally or via Docker:
-
-```bash
-# Start just the database
-docker-compose up db
 ```
 
 ## Verification

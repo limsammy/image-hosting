@@ -1,5 +1,8 @@
 """
 Pytest fixtures for testing.
+
+Uses in-memory SQLite for fast test execution.
+No external database setup required.
 """
 
 from collections.abc import AsyncGenerator
@@ -13,7 +16,7 @@ from app.database import Base, get_session
 from app.main import app
 
 
-# In-memory SQLite database for testing
+# In-memory SQLite database for testing (fast, no setup required)
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 engine = create_async_engine(

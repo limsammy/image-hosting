@@ -41,9 +41,16 @@ cd frontend && npm run dev
 # Build frontend
 cd frontend && npm run build
 
-# Backend (when implemented)
+# Backend
 cd backend && uv run uvicorn app.main:app --reload
+
+# Run tests (use 30s timeout - pytest may appear to hang after completion)
+cd backend && uv run pytest -q
 ```
+
+## Known Issues
+
+**Pytest hangs after completion**: When running pytest, it may appear to run indefinitely even after showing test results. Always use a short timeout (30s) when running tests. If tests pass but the command doesn't exit, the tests succeeded.
 
 ## MCP Tools - Use Selectively
 

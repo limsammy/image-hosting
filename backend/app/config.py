@@ -16,12 +16,13 @@ class Settings(BaseSettings):
         case_sensitive=False,
     )
 
-    # Database - separate components for flexibility (Docker standard)
+    # Database - separate components for flexibility
     postgres_user: str = "postgres"
     postgres_password: str = "postgres"
     postgres_host: str = "localhost"
     postgres_port: int = 5432
-    postgres_db: str = "imagehosting"
+    postgres_db: str = "imagehosting"  # Active database
+    postgres_db_dev: str = "imagehosting_dev"  # Development database name (for reference)
 
     @computed_field
     @property

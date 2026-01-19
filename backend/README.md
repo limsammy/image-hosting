@@ -6,7 +6,7 @@ FastAPI backend for the image hosting service.
 
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/) package manager
-- Docker and Docker Compose
+- PostgreSQL 16+ (local installation) OR Docker and Docker Compose
 
 ## Setup
 
@@ -52,29 +52,48 @@ R2_BUCKET_NAME=image-hosting
 R2_PUBLIC_URL=https://pub-xxx.r2.dev
 ```
 
-### 3. Start Database
+### 3. Set Up Database
+
+**Option A: Local PostgreSQL (recommended for development)**
+
+If you have PostgreSQL installed locally:
 
 ```bash
-# From project root
+# From project root - creates user and databases
+./scripts/setup-local-db.sh
+```
+
+Then update your `.env` with the values shown by the script:
+```bash
+POSTGRES_HOST=localhost
+POSTGRES_USER=imagehosting_user
+POSTGRES_PASSWORD=imagehosting_dev_password
+POSTGRES_DB=imagehosting_dev
+```
+
+**Option B: Docker PostgreSQL**
+
+```bash
+# From project root - uses internal Docker networking
 docker-compose up db -d
 ```
 
-PostgreSQL will automatically create the `imagehosting` database using the `POSTGRES_DB` environment variable.
+Note: Docker PostgreSQL uses internal networking, so it's only accessible from other Docker containers (backend, migrate services).
 
 ### 4. Run Migrations
 
 ```bash
-# Using Docker (recommended)
-docker-compose --profile tools run --rm migrate
-
-# Or locally (requires POSTGRES_HOST=localhost in .env)
+# Local development
 uv run alembic upgrade head
+
+# Or using Docker (if using Docker PostgreSQL)
+docker-compose --profile tools run --rm migrate
 ```
 
 ### 5. Start Development Server
 
 ```bash
-# Local development
+# Local development (with hot reload)
 uv run uvicorn app.main:app --reload
 
 # Or with Docker
@@ -124,7 +143,7 @@ backend/
 
 ## Testing
 
-Tests use pytest with pytest-asyncio for async support and an in-memory SQLite database.
+Tests use pytest with pytest-asyncio for async support. An in-memory SQLite database is used for fast test execution - no PostgreSQL setup required for running tests.
 
 ```bash
 # Install dev dependencies
