@@ -464,43 +464,44 @@ class ImageUploadRequest(BaseModel):
 15. Implement auth service (password hashing, JWT)
 16. Create auth router (register, login, /me)
 
-### Phase 5: Backend - Storage (Steps 17-19)
+### Phase 5: Backend - Storage (Steps 17-20)
 17. Implement R2 storage service with presigned PUT URLs and verification
 18. Create images router (upload-url, confirm with R2 verification, list, delete)
 19. Wire up routers in `main.py` with lifespan, CORS, and logging middleware
+20. Add admin router with storage stats endpoint (track usage against 10GB free tier)
 
-### Phase 6: Backend - Testing (Steps 20-22)
-20. Set up pytest with fixtures and test database
-21. Write unit tests for auth and storage services
-22. Write integration tests for API endpoints (with VCR for R2)
+### Phase 6: Backend - Testing (Steps 21-23)
+21. Set up pytest with fixtures and test database
+22. Write unit tests for auth and storage services
+23. Write integration tests for API endpoints (with moto for R2)
 
-### Phase 7: Frontend - Core (Steps 23-26)
-23. Create `api/client.ts` with axios + auth interceptor
-24. Implement `AuthContext.tsx` for auth state
-25. Set up React Router in `App.tsx`
-26. Create ErrorBoundary component
+### Phase 7: Frontend - Core (Steps 24-27)
+24. Create `api/client.ts` with axios + auth interceptor
+25. Implement `AuthContext.tsx` for auth state
+26. Set up React Router in `App.tsx`
+27. Create ErrorBoundary component
 
-### Phase 8: Frontend - Features (Steps 27-31)
-27. Build LoginForm and RegisterForm components
-28. Build `DropZone.tsx` with react-dropzone (include size/type validation)
-29. Create `ImageGallery.tsx` and `ImageCard.tsx`
-30. Implement `CopyButton.tsx` with clipboard API
-31. Style with Tailwind (responsive grid, forms, buttons)
+### Phase 8: Frontend - Features (Steps 28-32)
+28. Build LoginForm and RegisterForm components
+29. Build `DropZone.tsx` with react-dropzone (include size/type validation)
+30. Create `ImageGallery.tsx` and `ImageCard.tsx`
+31. Implement `CopyButton.tsx` with clipboard API
+32. Style with Tailwind (responsive grid, forms, buttons)
 
-### Phase 9: Frontend - Testing (Steps 32-33)
-32. Configure Vitest with React Testing Library
-33. Write component tests (DropZone, ImageCard, forms)
+### Phase 9: Frontend - Testing (Steps 33-34)
+33. Configure Vitest with React Testing Library
+34. Write component tests (DropZone, ImageCard, forms)
 
-### Phase 10: Integration & Polish (Steps 34-36)
-34. Test Docker Compose full stack locally
-35. Create Cloudflare R2 bucket + API credentials
-36. End-to-end test: register → login → upload → view → copy → delete
+### Phase 10: Integration & Polish (Steps 35-37)
+35. Test Docker Compose full stack locally
+36. Create Cloudflare R2 bucket + API credentials
+37. End-to-end test: register → login → upload → view → copy → delete
 
 ### Phase 11: Documentation & Code Quality (Optional)
-37. Add structured docstrings (Google style) to all Python modules, classes, and functions
-38. Add JSDoc comments to TypeScript functions and components
-39. Generate API documentation (e.g., Sphinx for backend, TypeDoc for frontend)
-40. Review and improve type hint coverage (run mypy/pyright)
+38. Add structured docstrings (Google style) to all Python modules, classes, and functions
+39. Add JSDoc comments to TypeScript functions and components
+40. Generate API documentation (e.g., Sphinx for backend, TypeDoc for frontend)
+41. Review and improve type hint coverage (run mypy/pyright)
 
 ---
 
