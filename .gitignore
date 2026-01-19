@@ -45,3 +45,4 @@ frontend/.env
 # Coverage
 coverage/
 *.lcov
+.serena/
