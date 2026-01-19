@@ -118,18 +118,37 @@ Open http://localhost:8000/docs for interactive Swagger UI.
 
 ## Cloudflare R2 Setup
 
-To enable image uploads, you need a Cloudflare R2 bucket:
+R2 provides S3-compatible object storage with a generous free tier (10GB storage, no egress fees).
 
-1. Create a Cloudflare account at https://cloudflare.com
-2. Navigate to R2 in the dashboard
-3. Create a new bucket (e.g., `image-hosting`)
-4. Create an API token with R2 read/write permissions
-5. Update `backend/.env` with:
-   - `R2_ACCOUNT_ID`
-   - `R2_ACCESS_KEY_ID`
-   - `R2_SECRET_ACCESS_KEY`
-   - `R2_BUCKET_NAME`
-   - `R2_PUBLIC_URL` (your bucket's public URL)
+### 1. Create R2 Bucket
+
+1. Log into [Cloudflare Dashboard](https://dash.cloudflare.com) → R2 Object Storage
+2. Click "Create bucket" → Name it `image-hosting`
+3. Note your **Account ID** from the dashboard URL: `dash.cloudflare.com/<ACCOUNT_ID>/r2`
+
+### 2. Generate API Credentials
+
+1. In R2 dashboard → "Manage R2 API Tokens" → "Create API Token"
+2. Permissions: **Object Read & Write**
+3. Scope: Specific bucket → `image-hosting`
+4. Save both the **Access Key ID** and **Secret Access Key** (shown only once)
+
+### 3. Enable Public Access
+
+1. Select your bucket → Settings → Public access
+2. Click "Allow Access" → Choose **R2.dev subdomain**
+3. Copy the public URL (e.g., `https://pub-xxx.r2.dev`)
+
+### 4. Update Environment Variables
+
+Update `backend/.env` with:
+```bash
+R2_ACCOUNT_ID=your_account_id
+R2_ACCESS_KEY=your_access_key_id
+R2_SECRET_KEY=your_secret_access_key
+R2_BUCKET_NAME=image-hosting
+R2_PUBLIC_URL=https://pub-xxx.r2.dev
+```
 
 ## Troubleshooting
 
