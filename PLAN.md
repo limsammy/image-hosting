@@ -150,6 +150,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+    is_admin: Mapped[bool] = mapped_column(default=False)  # Admin flag
     created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     images: Mapped[list["Image"]] = relationship(back_populates="user")
@@ -273,6 +274,16 @@ class ImageListResponse(BaseModel):
 | GET | `/api/images/` | List user's images | Yes |
 | DELETE | `/api/images/{id}` | Delete image | Yes |
 | GET | `/api/health` | Health check | No |
+
+### Admin Endpoints (requires is_admin=True)
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/admin/stats` | R2 storage usage stats | Admin |
+| GET | `/api/admin/images` | List ALL images (all users) | Admin |
+| GET | `/api/admin/images/{id}` | Get any image details | Admin |
+| DELETE | `/api/admin/images/{id}` | Delete any image | Admin |
+| GET | `/api/admin/users` | List all users | Admin |
 
 ---
 
@@ -468,7 +479,13 @@ class ImageUploadRequest(BaseModel):
 17. Implement R2 storage service with presigned PUT URLs and verification
 18. Create images router (upload-url, confirm with R2 verification, list, delete)
 19. Wire up routers in `main.py` with lifespan, CORS, and logging middleware
-20. Add admin router with storage stats endpoint (track usage against 10GB free tier)
+20. Add `is_admin` flag to User model with migration
+
+### Phase 5b: Admin Features (Steps 20a-20d)
+20a. Create admin dependency (require_admin) to check is_admin flag
+20b. Add admin router with storage stats endpoint (track usage against 10GB free tier)
+20c. Add admin CRUD endpoints for all images (list all, get any, delete any)
+20d. Add admin users list endpoint
 
 ### Phase 6: Backend - Testing (Steps 21-23)
 21. Set up pytest with fixtures and test database
@@ -487,6 +504,11 @@ class ImageUploadRequest(BaseModel):
 30. Create `ImageGallery.tsx` and `ImageCard.tsx`
 31. Implement `CopyButton.tsx` with clipboard API
 32. Style with Tailwind (responsive grid, forms, buttons)
+
+### Phase 8b: Frontend - Admin Dashboard (Steps 32a-32c)
+32a. Create AdminDashboard page (show R2 storage stats, usage vs 10GB limit)
+32b. Create AdminImageList component (view/delete all users' images)
+32c. Add admin nav link (only visible when user.is_admin=true)
 
 ### Phase 9: Frontend - Testing (Steps 33-34)
 33. Configure Vitest with React Testing Library

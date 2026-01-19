@@ -90,5 +90,7 @@ See [PLAN.md](./PLAN.md) for full plan.
 - Phase 1: Project setup (backend, frontend, Docker, docs)
 - Phase 2: UI/UX mockups and design system
 - Phase 3: Database models (User, Image) with Alembic migrations
+- Phase 4: Auth system (register, login, JWT)
+- Phase 5: R2 storage service and images API (upload, confirm, list, delete)
 
-**Current:** Phase 4 - Auth & Storage services
+**Current:** Phase 5b - Admin features (is_admin flag, admin dashboard, storage stats)
