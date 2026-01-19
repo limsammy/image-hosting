@@ -48,6 +48,42 @@ cd backend && uv run uvicorn app.main:app --reload
 cd backend && uv run pytest -q
 ```
 
+## Git Branching Strategy
+
+```
+main (production)
+ └── dev (integration/staging)
+      └── feature/* (feature branches)
+```
+
+| Branch | Purpose | Merges To |
+|--------|---------|-----------|
+| `main` | Production-ready code | - |
+| `dev` | Integration branch for testing | `main` (via PR) |
+| `feature/*` | Individual features/fixes | `dev` (via PR) |
+
+### Workflow
+
+1. **Start new work**: Branch from `dev`
+   ```bash
+   git checkout dev && git pull
+   git checkout -b feature/short-description
+   ```
+
+2. **Complete work**: Create PR to `dev`
+   ```bash
+   git push -u origin feature/short-description
+   gh pr create --base dev
+   ```
+
+3. **Release to production**: Create PR from `dev` to `main`
+
+### Branch Naming
+
+- `feature/add-admin-dashboard`
+- `feature/fix-upload-bug`
+- `feature/update-auth-flow`
+
 ## Known Issues
 
 **Pytest hangs after completion**: When running pytest, it may appear to run indefinitely even after showing test results. Always use a short timeout (30s) when running tests. If tests pass but the command doesn't exit, the tests succeeded.
