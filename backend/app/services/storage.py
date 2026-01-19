@@ -36,11 +36,17 @@ class R2Storage:
         if self._client is None:
             if not settings.r2_account_id:
                 raise RuntimeError("R2_ACCOUNT_ID not configured")
+            # Use jurisdiction URL if set, otherwise default R2 endpoint
+            endpoint_url = (
+                settings.r2_jurisdiction_url
+                if settings.r2_jurisdiction_url
+                else f"https://{settings.r2_account_id}.r2.cloudflarestorage.com"
+            )
             self._client = boto3.client(
                 "s3",
-                endpoint_url=f"https://{settings.r2_account_id}.r2.cloudflarestorage.com",
-                aws_access_key_id=settings.r2_access_key_id,
-                aws_secret_access_key=settings.r2_secret_access_key,
+                endpoint_url=endpoint_url,
+                aws_access_key_id=settings.r2_access_key,
+                aws_secret_access_key=settings.r2_secret_key,
                 config=Config(signature_version="s3v4"),
             )
         return self._client

@@ -36,8 +36,9 @@ def storage(mock_s3, monkeypatch):
     monkeypatch.setattr("app.config.settings.r2_bucket_name", "test-bucket")
     monkeypatch.setattr("app.config.settings.r2_public_url", "https://pub.r2.dev")
     monkeypatch.setattr("app.config.settings.r2_account_id", "test-account")
-    monkeypatch.setattr("app.config.settings.r2_access_key_id", "testing")
-    monkeypatch.setattr("app.config.settings.r2_secret_access_key", "testing")
+    monkeypatch.setattr("app.config.settings.r2_access_key", "testing")
+    monkeypatch.setattr("app.config.settings.r2_secret_key", "testing")
+    monkeypatch.setattr("app.config.settings.r2_jurisdiction_url", "")
 
     storage = R2Storage()
     # Override the client with our mocked one
