@@ -3,14 +3,20 @@ R2 storage service for generating presigned URLs and managing objects.
 Uses boto3 with S3-compatible API for Cloudflare R2.
 """
 
+import logging
 import uuid
 from pathlib import Path
 
 import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
+from fastapi import HTTPException, status
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class R2Storage:
@@ -97,24 +103,28 @@ class R2Storage:
         except ClientError:
             return False
 
-    def get_storage_stats(self) -> dict:
+    async def get_storage_stats(self, session: AsyncSession) -> dict:
         """
-        Get storage statistics for the R2 bucket.
+        Get storage statistics from the database.
         Returns total size in bytes and object count.
+
+        Uses database aggregation instead of R2 API listing for better performance
+        and to avoid R2 API costs.
         """
-        total_size = 0
-        object_count = 0
-
         try:
-            # List all objects in the bucket
-            paginator = self.client.get_paginator("list_objects_v2")
-            page_iterator = paginator.paginate(Bucket=self.bucket)
+            # Import here to avoid circular dependency
+            from app.models import Image
 
-            for page in page_iterator:
-                if "Contents" in page:
-                    for obj in page["Contents"]:
-                        total_size += obj["Size"]
-                        object_count += 1
+            # Query database for aggregated stats
+            result = await session.execute(
+                select(
+                    func.coalesce(func.sum(Image.size_bytes), 0).label("total_size"),
+                    func.count(Image.id).label("count"),
+                )
+            )
+            row = result.one()
+            total_size = int(row.total_size)
+            object_count = int(row.count)
 
             return {
                 "total_size_bytes": total_size,
@@ -124,17 +134,12 @@ class R2Storage:
                 "free_tier_limit_gb": 10,
                 "usage_percentage": round((total_size / (10 * 1024 * 1024 * 1024)) * 100, 2),
             }
-        except ClientError as e:
-            # Return empty stats on error
-            return {
-                "total_size_bytes": 0,
-                "total_size_mb": 0,
-                "total_size_gb": 0,
-                "object_count": 0,
-                "free_tier_limit_gb": 10,
-                "usage_percentage": 0,
-                "error": str(e),
-            }
+        except Exception as e:
+            logger.error(f"Failed to get storage stats from database: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Failed to retrieve storage statistics",
+            )
 
 
 # Global storage instance

@@ -3,6 +3,8 @@ Admin routes: storage stats, image management, and user management.
 Requires admin privileges (is_admin=True).
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, select
 
@@ -12,22 +14,24 @@ from app.schemas import ImageListResponse, ImageResponse, UserResponse
 from app.services import storage
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
+logger = logging.getLogger(__name__)
 
 
 @router.get("/stats")
 async def get_storage_stats(
     _admin_user: AdminUser,
+    session: SessionDep,
 ) -> dict:
     """
-    Get R2 storage usage statistics.
+    Get storage usage statistics from the database.
     Shows total size, object count, and usage against 10GB free tier.
     """
-    return storage.get_storage_stats()
+    return await storage.get_storage_stats(session)
 
 
 @router.get("/images", response_model=ImageListResponse)
 async def list_all_images(
-    _admin_user: AdminUser,
+    admin_user: AdminUser,
     session: SessionDep,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
@@ -36,6 +40,11 @@ async def list_all_images(
     List ALL images from ALL users (admin only).
     Supports pagination via skip/limit.
     """
+    logger.info(
+        f"Admin access: list_all_images - admin_id={admin_user.id} "
+        f"username={admin_user.username} skip={skip} limit={limit}"
+    )
+
     # Get total count
     count_result = await session.execute(select(func.count(Image.id)))
     total = count_result.scalar_one()
@@ -55,12 +64,17 @@ async def list_all_images(
 @router.get("/images/{image_id}", response_model=ImageResponse)
 async def get_any_image(
     image_id: int,
-    _admin_user: AdminUser,
+    admin_user: AdminUser,
     session: SessionDep,
 ) -> Image:
     """
     Get details for any image by ID (admin only).
     """
+    logger.info(
+        f"Admin access: get_any_image - admin_id={admin_user.id} "
+        f"username={admin_user.username} target_image_id={image_id}"
+    )
+
     result = await session.execute(select(Image).where(Image.id == image_id))
     image = result.scalar_one_or_none()
 
@@ -76,7 +90,7 @@ async def get_any_image(
 @router.delete("/images/{image_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_any_image(
     image_id: int,
-    _admin_user: AdminUser,
+    admin_user: AdminUser,
     session: SessionDep,
 ) -> None:
     """
@@ -93,6 +107,12 @@ async def delete_any_image(
             detail="Image not found",
         )
 
+    logger.warning(
+        f"Admin action: delete_any_image - admin_id={admin_user.id} "
+        f"username={admin_user.username} target_image_id={image_id} "
+        f"r2_key={image.r2_key} owner_id={image.user_id}"
+    )
+
     # Delete from R2 first
     if not storage.delete_object(image.r2_key):
         raise HTTPException(
@@ -107,7 +127,7 @@ async def delete_any_image(
 
 @router.get("/users", response_model=list[UserResponse])
 async def list_all_users(
-    _admin_user: AdminUser,
+    admin_user: AdminUser,
     session: SessionDep,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
@@ -116,6 +136,11 @@ async def list_all_users(
     List all users (admin only).
     Supports pagination via skip/limit.
     """
+    logger.info(
+        f"Admin access: list_all_users - admin_id={admin_user.id} "
+        f"username={admin_user.username} skip={skip} limit={limit}"
+    )
+
     result = await session.execute(
         select(User)
         .order_by(User.created_at.desc())

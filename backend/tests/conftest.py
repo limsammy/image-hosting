@@ -61,3 +61,30 @@ async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
         yield client
 
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+async def admin_user(session: AsyncSession):
+    """Create an admin user for testing."""
+    from app.models import User
+    from app.services.auth import AuthService
+
+    user = User(
+        username="admin",
+        email="admin@example.com",
+        password_hash=AuthService.hash_password("adminpassword"),
+        is_admin=True,
+    )
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user
+
+
+@pytest.fixture
+async def admin_auth_headers(admin_user):
+    """Get auth headers for admin user."""
+    from app.services.auth import AuthService
+
+    token = AuthService.create_access_token(admin_user.id)
+    return {"Authorization": f"Bearer {token}"}
