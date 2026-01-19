@@ -46,3 +46,6 @@ frontend/.env
 coverage/
 *.lcov
 .serena/
+
+# Planning (ephemeral working docs)
+.planning/

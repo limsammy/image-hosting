@@ -1,5 +1,30 @@
 # Image Hosting App - Implementation Plan
 
+## 📊 Current Status
+
+**Last Updated:** 2026-01-19
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| Phase 1: Project Setup | ✅ Complete | Backend, frontend, Docker, docs |
+| Phase 2: UI/UX Design | ✅ Complete | Mockups and design system |
+| Phase 3: Database & Models | ✅ Complete | User, Image models with Alembic |
+| Phase 4: Backend - Auth | ✅ Complete | Register, login, JWT |
+| Phase 5: Backend - Storage | ✅ Complete | R2 integration, images API |
+| Phase 5b: Admin Features | ✅ Complete | Admin endpoints (needs fixes) |
+| **Phase 5c: Code Review Fixes** | 🔄 **IN PROGRESS** | Security & performance improvements |
+| Phase 6: Backend Testing | 📋 Planned | Pytest unit & integration tests |
+| Phase 7: Frontend Core | 📋 Planned | API client, auth context, routing |
+| Phase 8: Frontend Features | 📋 Planned | Upload, gallery, UI components |
+| Phase 8b: Frontend Admin Dashboard | 📋 Planned | Admin UI for managing images/users |
+| Phase 9: Frontend Testing | 📋 Planned | Vitest component tests |
+| Phase 10: Integration & Polish | 📋 Planned | E2E testing, R2 setup |
+
+**Current Branch:** `feature/admin-features`
+**Current PR:** #3 (closed for fixes)
+
+---
+
 ## Overview
 A minimalist image hosting service with:
 - **Backend**: FastAPI (Python) with SQLAlchemy ORM
@@ -481,11 +506,19 @@ class ImageUploadRequest(BaseModel):
 19. Wire up routers in `main.py` with lifespan, CORS, and logging middleware
 20. Add `is_admin` flag to User model with migration
 
-### Phase 5b: Admin Features (Steps 20a-20d)
+### Phase 5b: Admin Features (Steps 20a-20d) ✅ COMPLETED
 20a. Create admin dependency (require_admin) to check is_admin flag
 20b. Add admin router with storage stats endpoint (track usage against 10GB free tier)
 20c. Add admin CRUD endpoints for all images (list all, get any, delete any)
 20d. Add admin users list endpoint
+
+### Phase 5c: Admin Features - Code Review Fixes (Steps 20e-20j)
+20e. Add audit logging to all admin endpoints (delete, list images, list users)
+20f. Verify is_admin field not exposed via /api/auth/me endpoint
+20g. Fix storage stats error handling (raise 503 on R2 failure, log errors)
+20h. Replace R2 bucket listing with database aggregation for storage stats
+20i. Add database indexes migration (ix_images_created_at, ix_users_created_at)
+20j. Add unit tests for require_admin dependency and basic admin endpoint tests
 
 ### Phase 6: Backend - Testing (Steps 21-23)
 21. Set up pytest with fixtures and test database
