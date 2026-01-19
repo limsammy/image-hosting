@@ -40,6 +40,10 @@ class User(Base):
         default=func.now(),
         nullable=False,
     )
+    is_admin: Mapped[bool] = mapped_column(
+        default=False,
+        nullable=False,
+    )
 
     # Relationship to images
     images: Mapped[list["Image"]] = relationship(

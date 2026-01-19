@@ -97,6 +97,45 @@ class R2Storage:
         except ClientError:
             return False
 
+    def get_storage_stats(self) -> dict:
+        """
+        Get storage statistics for the R2 bucket.
+        Returns total size in bytes and object count.
+        """
+        total_size = 0
+        object_count = 0
+
+        try:
+            # List all objects in the bucket
+            paginator = self.client.get_paginator("list_objects_v2")
+            page_iterator = paginator.paginate(Bucket=self.bucket)
+
+            for page in page_iterator:
+                if "Contents" in page:
+                    for obj in page["Contents"]:
+                        total_size += obj["Size"]
+                        object_count += 1
+
+            return {
+                "total_size_bytes": total_size,
+                "total_size_mb": round(total_size / (1024 * 1024), 2),
+                "total_size_gb": round(total_size / (1024 * 1024 * 1024), 2),
+                "object_count": object_count,
+                "free_tier_limit_gb": 10,
+                "usage_percentage": round((total_size / (10 * 1024 * 1024 * 1024)) * 100, 2),
+            }
+        except ClientError as e:
+            # Return empty stats on error
+            return {
+                "total_size_bytes": 0,
+                "total_size_mb": 0,
+                "total_size_gb": 0,
+                "object_count": 0,
+                "free_tier_limit_gb": 10,
+                "usage_percentage": 0,
+                "error": str(e),
+            }
+
 
 # Global storage instance
 storage = R2Storage()
