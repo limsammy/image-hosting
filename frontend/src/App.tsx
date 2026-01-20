@@ -4,6 +4,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute';
 import DesignSystem from './pages/DesignSystem';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Gallery from './pages/Gallery';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
 
             {/* Public Auth Pages */}
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<ComingSoon page="Register" />} />
+            <Route path="/register" element={<Register />} />
 
             {/* Protected App Pages */}
             <Route
