@@ -1,26 +1,40 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import ProtectedRoute from './components/ProtectedRoute';
 import DesignSystem from './pages/DesignSystem';
 import Login from './pages/Login';
 import Gallery from './pages/Gallery';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Design System Route */}
-        <Route path="/design-system" element={<DesignSystem />} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            {/* Design System Route (public for development) */}
+            <Route path="/design-system" element={<DesignSystem />} />
 
-        {/* Auth Pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<ComingSoon page="Register" />} />
+            {/* Public Auth Pages */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<ComingSoon page="Register" />} />
 
-        {/* Main App Pages */}
-        <Route path="/gallery" element={<Gallery />} />
+            {/* Protected App Pages */}
+            <Route
+              path="/gallery"
+              element={
+                <ProtectedRoute>
+                  <Gallery />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Redirect root to design system for now */}
-        <Route path="/" element={<Navigate to="/design-system" replace />} />
-      </Routes>
-    </BrowserRouter>
+            {/* Redirect root to gallery (protected) */}
+            <Route path="/" element={<Navigate to="/gallery" replace />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
