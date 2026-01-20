@@ -521,9 +521,78 @@ class ImageUploadRequest(BaseModel):
 20j. Add unit tests for require_admin dependency and basic admin endpoint tests
 
 ### Phase 6: Backend - Testing (Steps 21-23)
-21. Set up pytest with fixtures and test database
-22. Write unit tests for auth and storage services
-23. Write integration tests for API endpoints (with moto for R2)
+
+**Goal:** Comprehensive backend test coverage for services and API endpoints
+
+**Step 21:** Set up pytest with fixtures and test database
+- Configure pytest with async support (`pytest-asyncio`)
+- Create fixtures in `conftest.py`: `session`, `client`, `test_user`, `admin_user`
+- Use in-memory SQLite for fast test database
+- Add `admin_auth_headers` fixture for admin endpoint testing
+
+**Step 22:** Write unit tests for auth and storage services
+
+**22a. Auth Service Tests** (`backend/tests/unit/test_auth_service.py`)
+
+*Password Hashing:*
+- `test_hash_password_creates_bcrypt_hash()` - Verify bcrypt format ($2b$)
+- `test_hash_password_different_each_time()` - Same password → different hashes (salt)
+- `test_verify_password_correct()` - Correct password returns True
+- `test_verify_password_incorrect()` - Wrong password returns False
+- `test_verify_password_empty_string()` - Empty password returns False
+
+*JWT Token Generation:*
+- `test_create_access_token_valid_payload()` - Token contains user_id, username, exp
+- `test_create_access_token_expiration()` - Token expires after configured time
+- `test_create_access_token_signature()` - Token signed with correct secret
+- `test_decode_access_token_valid()` - Valid token decodes correctly
+- `test_decode_access_token_expired()` - Expired token raises exception
+- `test_decode_access_token_invalid_signature()` - Wrong secret raises exception
+- `test_decode_access_token_malformed()` - Invalid format raises exception
+
+**22b. Storage Service Tests** (`backend/tests/unit/test_storage_service.py`)
+
+*R2 Key Generation:*
+- `test_generate_image_key_format()` - Verify key format: `{user_id}/{uuid}.{ext}`
+- `test_generate_image_key_unique()` - Multiple calls → unique UUIDs
+- `test_generate_image_key_extension_extraction()` - Correct extension from MIME type
+  - `image/jpeg` → `.jpg`
+  - `image/png` → `.png`
+  - `image/gif` → `.gif`
+  - `image/webp` → `.webp`
+- `test_generate_image_key_user_id()` - User ID correctly included in path
+- `test_generate_image_key_no_special_chars()` - Only alphanumeric + `/` + `.`
+
+*Presigned URL Generation:*
+- `test_generate_upload_url_valid()` - URL contains bucket, key, signature
+- `test_generate_upload_url_expiration()` - URL expires after configured time (3600s default)
+- `test_generate_upload_url_content_type()` - ContentType parameter included
+- `test_generate_upload_url_signature_valid()` - AWS Signature v4 format
+- `test_generate_upload_url_different_keys()` - Different keys → different URLs
+- `test_presigned_url_put_method()` - URL configured for PUT operation
+
+*Object Verification (with moto):*
+- `test_verify_object_exists_success()` - Returns size and content_type
+- `test_verify_object_exists_not_found()` - Returns None for missing object
+- `test_verify_object_exists_correct_metadata()` - Metadata matches uploaded file
+
+*Object Deletion (with moto):*
+- `test_delete_object_success()` - Returns True on successful delete
+- `test_delete_object_not_found()` - Returns False for missing object
+- `test_delete_object_idempotent()` - Multiple deletes don't raise errors
+
+**Implementation Notes:**
+- Use `unittest.mock.patch` for R2 client in key generation tests (no AWS calls)
+- Use `moto` library for presigned URL validation tests (mock S3/R2 service)
+- Test edge cases: empty strings, special characters, very long filenames
+- Verify no sensitive data (secrets, passwords) logged or exposed
+
+**Step 23:** Write integration tests for API endpoints (with moto for R2)
+- Test full request/response cycle for all endpoints
+- Mock R2 service with `moto` for upload/delete flows
+- Test authentication flows: register → login → protected endpoints
+- Test admin authorization: non-admin denied, admin allowed
+- Test error cases: invalid tokens, missing fields, unauthorized access
 
 ### Phase 7: Frontend - Core (Steps 24-27)
 24. Create `api/client.ts` with axios + auth interceptor
