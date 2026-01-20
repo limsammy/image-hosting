@@ -3,36 +3,36 @@ import apiClient from './client';
 export interface UploadUrlRequest {
   filename: string;
   content_type: string;
+  size_bytes: number;
 }
 
 export interface UploadUrlResponse {
   upload_url: string;
-  image_key: string;
+  r2_key: string;
+  public_url: string;
 }
 
 export interface ConfirmUploadRequest {
-  image_key: string;
+  r2_key: string;
   filename: string;
   content_type: string;
-  size: number;
+  size_bytes: number;
 }
 
 export interface Image {
-  id: string;
+  id: number;
   filename: string;
-  size: number;
+  public_url: string;
   content_type: string;
-  image_key: string;
-  image_url: string;
+  size_bytes: number;
   created_at: string;
-  user_id: string;
 }
 
 export interface ListImagesResponse {
   images: Image[];
   total: number;
   page: number;
-  page_size: number;
+  per_page: number;
 }
 
 export const imagesApi = {
@@ -68,9 +68,9 @@ export const imagesApi = {
   /**
    * List user's images with pagination
    */
-  listImages: async (page = 1, pageSize = 20): Promise<ListImagesResponse> => {
+  listImages: async (page = 1, perPage = 20): Promise<ListImagesResponse> => {
     const response = await apiClient.get<ListImagesResponse>('/images/', {
-      params: { page, page_size: pageSize },
+      params: { page, per_page: perPage },
     });
     return response.data;
   },
@@ -78,7 +78,7 @@ export const imagesApi = {
   /**
    * Delete an image
    */
-  deleteImage: async (imageId: string): Promise<void> => {
+  deleteImage: async (imageId: number): Promise<void> => {
     await apiClient.delete(`/images/${imageId}`);
   },
 };
